@@ -5,10 +5,43 @@ describe('Inicio de sesion de usuario', () => {
     cy.visit('/');
   });
   
-  it ('Diligenciar datos primer formulario', () => {
+  it ('Seleccionar check pareja', () => {
     cy.visit('/');
     cy.get('input[id=pareja]').check();
     cy.get('input[id=pareja]').should('be.checked');
+  });
+
+  it ('Seleccionar check tipo de vivienda', () => {
+    cy.visit('/');
+    cy.get('input[id=apartamento]').check();
+    cy.get('input[id=apartamento]').should('be.checked');
+  });
+
+  it ('Seleccionar ciudad', () => {
+    cy.visit('/');
+    cy.get('select:has(option[value="Quito"])')
+  .select('Quito')
+  .should('have.value', 'Quito')
+  });
+
+  it('Escoger rango', () => {
+    cy.visit('/');
+    cy.get('input[type="range"][min="50000"][max="1000000"]').as('sliders')
+
+// mínimo (el slider máximo lo tapa, por eso force)
+cy.get('@sliders').eq(0)
+  .invoke('val', 50000)
+  .trigger('input', { force: true })
+  .trigger('change', { force: true })
+
+// máximo
+cy.get('@sliders').eq(1)
+  .invoke('val', 1000000)
+  .trigger('input', { force: true })
+  .trigger('change', { force: true })
+
+cy.get('@sliders').eq(0).should('have.value', '50000')
+cy.get('@sliders').eq(1).should('have.value', '1000000')
   });
   
  /* 
