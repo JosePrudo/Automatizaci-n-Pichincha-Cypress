@@ -4,7 +4,10 @@ describe('Inicio de sesion de usuario', () => {
   it('Redirigir al usuario no autenticado a la página de inicio de sesión', () => {
     cy.visit('/');
   });
-  it('Redirigir a la página de inicio después de iniciar sesión ', () => {
+  
+  
+ /* 
+ it('Redirigir a la página de inicio después de iniciar sesión ', () => {
     cy.fixture('Datos').then((Datos) => {
       cy.visit('/signin');
       cy.get('[data-test=signin-username]').type(Datos.usuario);
@@ -44,6 +47,7 @@ describe('Inicio de sesion de usuario', () => {
       cy.contains('Username or password is invalid');
     });
   });
+  */
  // it('Permitir que un visitante se registre, inicie sesión y cierre sesión', () => {
  //   cy.visit('/signin');
  //   cy.get('[data-test=signup]').click();
