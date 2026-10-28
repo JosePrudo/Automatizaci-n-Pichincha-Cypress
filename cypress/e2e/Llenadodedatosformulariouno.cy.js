@@ -2,10 +2,10 @@
 
 describe('Inicio de sesion de usuario', () => {
   it('Redirigir al usuario no autenticado a la página de inicio de sesión', () => {
-    cy.visit('');
+    cy.visit('/');
   });
   it('Redirigir a la página de inicio después de iniciar sesión ', () => {
-    cy.fixture('DatosUsuarios').then((Datos) => {
+    cy.fixture('Datos').then((Datos) => {
       cy.visit('/signin');
       cy.get('[data-test=signin-username]').type(Datos.usuario);
       cy.get('[data-test=signin-password]').type(Datos.contraseña);
@@ -15,7 +15,7 @@ describe('Inicio de sesion de usuario', () => {
   });
 
   it('Mostrar un error para un usuario no válido', () => {
-    cy.fixture('DatosUsuarios').then((Datos) => {
+    cy.fixture('Datos').then((Datos) => {
       cy.visit('/signin');
       cy.get('[data-test=signin-username]').type(Datos.usuarioincorrecto);
       cy.get('[data-test=signin-password]').type(Datos.contraseña);
@@ -25,7 +25,7 @@ describe('Inicio de sesion de usuario', () => {
   });
 
   it('Activar check de "Recordarme"', () => {
-    cy.fixture('DatosUsuarios').then((Datos) => {
+    cy.fixture('Datos').then((Datos) => {
       cy.visit('/signin');
       cy.get('[data-test=signin-username]').type(Datos.usuario);
       cy.get('[data-test=signin-password]').type(Datos.contraseña);
@@ -36,7 +36,7 @@ describe('Inicio de sesion de usuario', () => {
   });
 
   it('Mostrar un error para una contraseña incorrecta con un usuario existente', () => {
-    cy.fixture('DatosUsuarios').then((Datos) => {
+    cy.fixture('Datos').then((Datos) => {
       cy.visit('/signin');
       cy.get('[data-test=signin-username]').type(Datos.usuario);
       cy.get('[data-test=signin-password]').type(Datos.contraseñaincorrecta);

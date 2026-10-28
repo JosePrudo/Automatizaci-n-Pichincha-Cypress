@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Automatización E2E del sitio de Banco Pichincha con Cypress",
   "private": true,
-  "baseUrl": "https://brave-mud-0605ba20f.3.azurestaticapps.net/",
   "scripts": {
     "cy:open": "cypress open",
     "test": "cypress run",

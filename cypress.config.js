@@ -10,7 +10,7 @@ module.exports = defineConfig({
     reportPageTitle: 'Banco Pichincha - Reporte Cypress',
   },
   e2e: {
-    baseUrl: 'https://www.pichincha.com',
+    baseUrl: 'https://brave-mud-0605ba20f.3.azurestaticapps.net',
     specPattern: 'cypress/e2e/**/*.cy.js',
     viewportWidth: 1366,
     viewportHeight: 768,
