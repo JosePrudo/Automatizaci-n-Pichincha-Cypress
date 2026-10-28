@@ -5,6 +5,11 @@ describe('Inicio de sesion de usuario', () => {
     cy.visit('/');
   });
   
+  it ('Diligenciar datos primer formulario', () => {
+    cy.visit('/');
+    cy.get('input[id=pareja]').check();
+    cy.get('input[id=pareja]').should('be.checked');
+  });
   
  /* 
  it('Redirigir a la página de inicio después de iniciar sesión ', () => {
