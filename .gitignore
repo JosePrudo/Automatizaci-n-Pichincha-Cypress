@@ -147,3 +147,9 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/reports/
+cypress/downloads/
