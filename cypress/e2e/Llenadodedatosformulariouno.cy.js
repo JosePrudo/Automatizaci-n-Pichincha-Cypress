@@ -128,6 +128,167 @@ describe('Simulación de crédito hipotecario', { testIsolation: false }, () => 
     });
   });
 
+  describe('Sección 4 - Tus resultados', () => {
+    before(() => {
+      cy.completarPaso3();
+    });
+
+    it('Mostrar la sección de resultados', () => {
+      cy.contains('h2', 'Tus resultados').should('be.visible');
+      cy.contains('Aquí ve su cuota y los seguros').should('be.visible');
+      cy.screenshot();
+    });
+
+    it('Click en Siguiente', () => {
+      cy.contains('button', 'Siguiente').should('be.enabled').click();
+      cy.screenshot();
+    });
+  });
+
+  describe('Sección 5 - Tu capacidad real', () => {
+    before(() => {
+      cy.completarPaso4();
+    });
+
+    it('Mostrar la sección de capacidad real', () => {
+      cy.contains('h2', 'Tu capacidad real').should('be.visible');
+      cy.screenshot();
+    });
+
+    it('Ingresar nombre completo', () => {
+      cy.get('input[placeholder="Nombre completo"]').clear().type('Usuario Prueba');
+      cy.get('input[placeholder="Nombre completo"]').should('have.value', 'Usuario Prueba');
+      cy.screenshot();
+    });
+
+    it('Ingresar cédula', () => {
+      cy.get('input[placeholder="Documento de identidad"]').clear().type('1234567890');
+      cy.get('input[placeholder="Documento de identidad"]').should('have.value', '1234567890');
+      cy.screenshot();
+    });
+
+    it('Ingresar correo electrónico', () => {
+      cy.get('input[type="email"]').clear().type('usuario.prueba@ejemplo.com');
+      cy.get('input[type="email"]').should('have.value', 'usuario.prueba@ejemplo.com');
+      cy.screenshot();
+    });
+
+    it('Ingresar teléfono celular', () => {
+      cy.get('input[type="tel"]').clear().type('0991234567');
+      cy.get('input[type="tel"]').should('have.value', '0991234567');
+      cy.screenshot();
+    });
+
+    it('Autorizar consulta de historial crediticio', () => {
+      cy.get('input[id=authorizeCreditCheck]').check();
+      cy.get('input[id=authorizeCreditCheck]').should('be.checked');
+      cy.screenshot();
+    });
+
+    it('Ingresar cargas familiares', () => {
+      cy.get('input[placeholder="Cargas familiares"]').clear().type('2');
+      cy.get('input[placeholder="Cargas familiares"]').should('have.value', '2');
+      cy.screenshot();
+    });
+
+    it('Ingresar lugar de trabajo', () => {
+      cy.get('input[placeholder="Compañía de tecnología S.A.S"]').clear().type('Empresa de Prueba S.A.');
+      cy.get('input[placeholder="Compañía de tecnología S.A.S"]').should('have.value', 'Empresa de Prueba S.A.');
+      cy.screenshot();
+    });
+
+    it('Click en Siguiente', () => {
+      cy.contains('button', 'Siguiente').should('be.enabled').click();
+      cy.screenshot();
+    });
+  });
+
+  describe('Sección 6 - Quiero que me Contacten', () => {
+    before(() => {
+      cy.completarPaso5();
+    });
+
+    it('Mostrar la sección de contacto', () => {
+      cy.contains('h2', 'Quiero que me Contacten').should('be.visible');
+      cy.screenshot();
+    });
+
+    it('Seleccionar horario de llamada', () => {
+      cy.get('input[name=preferredTime][value="mañana"]').check();
+      cy.get('input[name=preferredTime][value="mañana"]').should('be.checked');
+      cy.screenshot();
+    });
+
+    it('Seleccionar medio de contacto', () => {
+      cy.get('input[name=contactMethod][value="whatsapp"]').check();
+      cy.get('input[name=contactMethod][value="whatsapp"]').should('be.checked');
+      cy.screenshot();
+    });
+
+    it('Aceptar políticas de privacidad', () => {
+      cy.get('input[id=acceptsPrivacyPolicy]').check();
+      cy.get('input[id=acceptsPrivacyPolicy]').should('be.checked');
+      cy.screenshot();
+    });
+
+    it('Aceptar recibir información de otros productos', () => {
+      cy.get('input[id=wantsProductInfo]').check();
+      cy.get('input[id=wantsProductInfo]').should('be.checked');
+      cy.screenshot();
+    });
+
+    it('Click en Siguiente', () => {
+      cy.contains('button', 'Siguiente').should('be.enabled').click();
+      cy.screenshot();
+    });
+  });
+
+  describe('Sección 7 - Confirmación', () => {
+    before(() => {
+      cy.completarPaso6();
+    });
+
+    it('Mostrar la sección de confirmación', () => {
+      cy.contains('h2', 'Confirmación').should('be.visible');
+      cy.contains('h3', '¡Listo! Te contactaremos pronto').should('be.visible');
+      cy.contains('p', 'Código de tu simulación').next().invoke('text').should('match', /\d/);
+      cy.screenshot();
+    });
+
+    it('Verificar resumen de la simulación', () => {
+      ['pareja', 'apartamento', 'empleado', 'fija', 'mañana', 'whatsapp'].forEach((texto) => {
+        cy.contains('app-step-confirmation span', texto).should('be.visible');
+      });
+      ['Quito', '1987-03-08', 'casado', '20 años', 'Usuario Prueba', '1234567890',
+        'usuario.prueba@ejemplo.com', '0991234567', 'Empresa de Prueba S.A.'].forEach((valor) => {
+        // Angular asigna la propiedad value, no el atributo: no sirve [value="..."].
+        cy.get('app-step-confirmation input[readonly]')
+          .filter((_, el) => el.value === valor)
+          .should('have.length', 1);
+      });
+      cy.screenshot();
+    });
+
+    it('Confirmar que la información es correcta', () => {
+      cy.contains('button', 'Aceptar y Enviar').should('be.disabled');
+      cy.get('input[id=confirmInformation]').check();
+      cy.get('input[id=confirmInformation]').should('be.checked');
+      cy.screenshot();
+    });
+
+     it('Click en Aceptar y Enviar', () => {
+      cy.intercept('POST', '**/api/Simulacion/procesar').as('procesar');
+      cy.contains('button', 'Aceptar y Enviar').should('be.enabled').click();
+    //  cy.wait('@procesar').its('response.statusCode').should('be.oneOf', [200, 201]);
+      cy.screenshot();
+    }); 
+
+    it('Click en botón Aceptar Final', () => {
+     cy.contains('button', ' Aceptar ').should('be.enabled').click();
+      cy.screenshot();
+    });
+  });
+
   
 
  
