@@ -6,3 +6,11 @@ Cypress.Commands.add('aceptarCookies', () => {
     }
   });
 });
+
+Cypress.Commands.add('completarPaso1', () => {
+  cy.visit('/');
+  cy.get('input[id=pareja]').check();
+  cy.get('input[id=apartamento]').check();
+  cy.get('select:has(option[value="Quito"])').select('Quito');
+  cy.contains('button', 'Siguiente').should('be.enabled').click();
+});

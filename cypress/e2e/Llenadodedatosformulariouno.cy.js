@@ -4,22 +4,27 @@
 describe('Inicio de sesion de usuario', { testIsolation: false }, () => {
   it('Redirigir al usuario no autenticado a la página de inicio de sesión', () => {
     cy.visit('/');
+    cy.screenshot();
   });
   
   it ('Seleccionar check pareja', () => {
     cy.get('input[id=pareja]').check();
     cy.get('input[id=pareja]').should('be.checked');
+    cy.screenshot();
   });
+  
 
   it ('Seleccionar check tipo de vivienda', () => {
     cy.get('input[id=apartamento]').check();
     cy.get('input[id=apartamento]').should('be.checked');
+    cy.screenshot();
   });
 
   it ('Seleccionar ciudad', () => {
     cy.get('select:has(option[value="Quito"])')
   .select('Quito')
   .should('have.value', 'Quito')
+  cy.screenshot();
   });
 
   it('Escoger rango', () => {
@@ -30,20 +35,43 @@ cy.get('@sliders').eq(0)
   .invoke('val', 50000)
   .trigger('input', { force: true })
   .trigger('change', { force: true })
+  cy.screenshot();
 
 // máximo
 cy.get('@sliders').eq(1)
   .invoke('val', 1000000)
   .trigger('input', { force: true })
   .trigger('change', { force: true })
+  cy.screenshot();
 
 cy.get('@sliders').eq(0).should('have.value', '50000')
 cy.get('@sliders').eq(1).should('have.value', '1000000')
+cy.screenshot();
   });
 
 
 it('Click en continuar', () => {
   cy.contains('button', 'Siguiente').should('be.enabled').click()
+  cy.screenshot();
+});
+
+describe('Paso 2', () => {
+  // El estado del formulario vive en memoria: hay que rehacer el paso 1 tras cada recarga.
+  before(() => {
+    cy.completarPaso1();
+  });
+
+  it('Seleccionar situación laboral', () => {
+    cy.get('input[id=empleado]').check();
+    cy.get('input[id=empleado]').should('be.checked');
+    cy.screenshot();  
+  });
+
+  it('Ingresar ganancias despues de impuestos', () => {
+    cy.get('input[placeholder="Ingresos netos"]').clear().type('500000');
+    cy.get('input[placeholder="Ingresos netos"]').should('have.value', '500000');
+    cy.screenshot();
+  });
 });
 
  /* 
