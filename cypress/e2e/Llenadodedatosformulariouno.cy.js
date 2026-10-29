@@ -1,31 +1,28 @@
 /// <reference types="cypress" />
 
-describe('Inicio de sesion de usuario', () => {
+// Las pruebas comparten la página: el formulario se llena paso a paso.
+describe('Inicio de sesion de usuario', { testIsolation: false }, () => {
   it('Redirigir al usuario no autenticado a la página de inicio de sesión', () => {
     cy.visit('/');
   });
   
   it ('Seleccionar check pareja', () => {
-    cy.visit('/');
     cy.get('input[id=pareja]').check();
     cy.get('input[id=pareja]').should('be.checked');
   });
 
   it ('Seleccionar check tipo de vivienda', () => {
-    cy.visit('/');
     cy.get('input[id=apartamento]').check();
     cy.get('input[id=apartamento]').should('be.checked');
   });
 
   it ('Seleccionar ciudad', () => {
-    cy.visit('/');
     cy.get('select:has(option[value="Quito"])')
   .select('Quito')
   .should('have.value', 'Quito')
   });
 
   it('Escoger rango', () => {
-    cy.visit('/');
     cy.get('input[type="range"][min="50000"][max="1000000"]').as('sliders')
 
 // mínimo (el slider máximo lo tapa, por eso force)
@@ -43,7 +40,12 @@ cy.get('@sliders').eq(1)
 cy.get('@sliders').eq(0).should('have.value', '50000')
 cy.get('@sliders').eq(1).should('have.value', '1000000')
   });
-  
+
+
+it('Click en continuar', () => {
+  cy.contains('button', 'Siguiente').should('be.enabled').click()
+});
+
  /* 
  it('Redirigir a la página de inicio después de iniciar sesión ', () => {
     cy.fixture('Datos').then((Datos) => {
