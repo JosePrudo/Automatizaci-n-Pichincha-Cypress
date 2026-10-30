@@ -1,3 +1,12 @@
+// Pausa antes de cada captura para que la página termine de renderizar.
+const STEP_DELAY_MS = 2000;
+
+Cypress.Commands.overwrite('screenshot', (originalFn, subject, ...args) => {
+  return cy
+    .wait(STEP_DELAY_MS, { log: false })
+    .then(() => originalFn(subject, ...args));
+});
+
 Cypress.Commands.add('aceptarCookies', () => {
   cy.get('body').then(($body) => {
     const boton = $body.find('button:contains("Aceptar"), button:contains("ACEPTAR")');

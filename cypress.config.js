@@ -8,6 +8,10 @@ module.exports = defineConfig({
     embeddedScreenshots: true,
     inlineAssets: true,
     reportPageTitle: 'Banco Pichincha - Reporte Cypress',
+    // Un HTML por ejecución, sin borrar los anteriores.
+    overwrite: false,
+    reportFilename: 'reporte_[status]_[datetime]',
+    timestamp: 'yyyy-mm-dd_HH-MM-ss',
   },
   e2e: {
     baseUrl: 'https://brave-mud-0605ba20f.3.azurestaticapps.net',
